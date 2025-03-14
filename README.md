@@ -3,7 +3,14 @@
 ## Project Description
 This is a desktop application that creates a To-do list. In the To-do list, you can add who made the entry, the due date to complete the task, who are the collaborators, the description of the task, and the status of the task.
 
+## Team Members
+Diana Diaz
 
+Saegan Farias
+
+Joshua Handy
+
+Mark Rodriguez
 
 ## Agile Planning
 ### User stories
