@@ -25,16 +25,89 @@ mainMenu
 bfont = tkFont.Font(family='Helvetica', size=16, weight=tkFont.BOLD)
 
 #functions
+# Function to add a new task
 def new_task():
     def popup_destroy():
         top.destroy()
+
+    def submit_task():
+        # Get the values from the input fields
+        name = name_entry.get()
+        due_date = due_date_entry.get()
+        description = description_entry.get()
+        status = status_entry.get()
+        people_involved = people_entry.get()
+
+        # Check if any of the fields are empty
+        if not name or not due_date or not description or not status or not people_involved:
+            # If any field is empty, show an error message in red
+            success_label.config(text="Please fill in all fields!", fg="red")
+        else:
+            # SQL query to insert new task into the database
+            cursor.execute('''
+                    INSERT INTO to_do_list (name, due_date, description, status, people_involved)
+                    VALUES (?, ?, ?, ?, ?)
+                ''', (name, due_date, description, status, people_involved))
+
+            # Commit the changes and save the data
+            dataConnector.commit()
+
+            # Show a message indicating that the task was added
+            success_label.config(text="Task added successfully!", fg="green")
+
+            # Clears the fields after submitting
+            name_entry.delete(0, END)
+            due_date_entry.delete(0, END)
+            description_entry.delete(0, END)
+            status_entry.delete(0, END)
+            people_entry.delete(0, END)
+
+    # Create a new top-level window for entering the task details
     top = Tk()
-    width = str(int(root.winfo_screenwidth()/2)-150)
-    height = str(int(root.winfo_screenheight()/2)-300)
-    top.geometry("350x450+"+width+'+'+height)
+    width = str(int(root.winfo_screenwidth() / 2) - 150)
+    height = str(int(root.winfo_screenheight() / 2) - 300)
+    top.geometry("350x450+" + width + '+' + height)
     top.title("New Task")
+
+    # Labels and Entry fields for task details
+    name_label = Label(top, text="Task Name:")
+    name_label.place(x=20, y=30)
+    name_entry = Entry(top, width=30)
+    name_entry.place(x=120, y=30)
+
+    due_date_label = Label(top, text="Due Date:")
+    due_date_label.place(x=20, y=80)
+    due_date_entry = Entry(top, width=30)
+    due_date_entry.place(x=120, y=80)
+
+    description_label = Label(top, text="Description:")
+    description_label.place(x=20, y=130)
+    description_entry = Entry(top, width=30)
+    description_entry.place(x=120, y=130)
+
+    status_label = Label(top, text="Status:")
+    status_label.place(x=20, y=180)
+    status_entry = Entry(top, width=30)
+    status_entry.place(x=120, y=180)
+
+    people_label = Label(top, text="People Involved:")
+    people_label.place(x=20, y=230)
+    people_entry = Entry(top, width=30)
+    people_entry.place(x=120, y=230)
+
+    # Success message label
+    success_label = Label(top, text="", fg="green")
+    success_label.place(x=110, y=320)
+
+    # Submit button to save the task into the database
+    submit_button = Button(top, text="Add Task", command=submit_task)
+    submit_button.place(x=120, y=350, width=100, height=30)
+
+    # Close button to close the popup window
     close_button = Button(top, text="Done", command=popup_destroy)
-    close_button.place(x=150, y=400,width=40, height=30)
+    close_button.place(x=150, y=400, width=40, height=30)
+
+
 
 
 def completed_tasks():
