@@ -256,6 +256,8 @@ def delete_task():
 def main_menu():
     pass
 
+def refreshtable():
+    rerendertable()
 # Label to display the query results
 query_label = Text(root, height=25, width=107)
 query_label.grid(row=0, column=0, padx=20, pady=20)
@@ -275,6 +277,9 @@ delete_task_button.place(x=680, y=450, width=200, height=60)
 
 main_menu_button = Button(root, text="Main Menu", command=main_menu, font=bfont)
 main_menu_button.place(x=20, y=520, width=200, height=60)
+
+refresh_button = Button(root, text="Refresh", command=refreshtable, font=bfont)
+refresh_button.place(x=240, y=520, width=200, height=60)
 
 # Call rerendertable() to populate the table on startup
 rerendertable()
