@@ -24,6 +24,20 @@ mainMenu
 
 bfont = tkFont.Font(family='Helvetica', size=16, weight=tkFont.BOLD)
 
+def rerendertable():
+    cursor.execute('select * from to_do_list')
+    whattodo = cursor.fetchall()
+
+    show_work = ''
+    for work in whattodo:
+        show_work += str(work) + "\n"
+
+    query_label.config(state='normal')  # Make sure you can insert text into the widget
+    query_label.delete('1.0', END)  # Clear previous contents
+    query_label.insert('1.0', show_work)  # Insert the new data
+    query_label.config(state='disabled')  # Make the text widget read-only
+    print("Table re-rendered")
+
 #functions
 # Function to add a new task
 def new_task():
@@ -61,6 +75,8 @@ def new_task():
             description_entry.delete(0, END)
             status_entry.delete(0, END)
             people_entry.delete(0, END)
+
+            rerendertable()
 
     # Create a new top-level window for entering the task details
     top = Tk()
@@ -107,39 +123,133 @@ def new_task():
     close_button = Button(top, text="Done", command=popup_destroy)
     close_button.place(x=150, y=400, width=40, height=30)
 
-
-
-
 def completed_tasks():
-    cursor.execute('select * from to_do_list')
+    cursor.execute('''select * FROM to_do_list where status = '10/10' ''')
     whattodo = cursor.fetchall()
 
     show_work = ''
     for work in whattodo:
         show_work += str(work) + "\n"
 
-    query_label.insert('1.0', show_work)
-    print("click")
+    query_label.config(state='normal')  # Make sure you can insert text into the widget
+    query_label.delete('1.0', END)  # Clear previous contents
+    query_label.insert('1.0', show_work)  # Insert the new data
+    query_label.config(state='disabled')  # Make the text widget read-only
+    print("Table re-rendered")
 
 def edit_task():
     def popup_destroy():
         top.destroy()
+
+    def update_task():
+        task_id = Update_entry.get()  # Get task ID
+        update = status_entry.get() # Get new status value
+
+        if not update or not task_id:
+            # Display an error message if the task ID is empty
+            error_label.config(text="Please fill in the ID you wish to delete", fg="red")
+            success_label.config(text="")  # Hide success label
+        else:
+            # SQL query to insert new task into the database
+            cursor.execute('''update to_do_list set status = ? where id = ? ''', [update, task_id])
+
+            # Commit the changes and save the data
+            dataConnector.commit()
+
+            # Show a message indicating that the task was added
+            success_label.config(text="Task Deleted successfully!", fg="green")
+            error_label.config(text="")
+
+            # Clears the fields after submitting
+            Update_entry.delete(0, END)
+            status_entry.delete(0, END)
+
+            rerendertable()
     top = Tk()
     width = str(int(root.winfo_screenwidth()/2)-150)
     height = str(int(root.winfo_screenheight()/2)-300)
     top.geometry("350x450+"+width+'+'+height)
     top.title("Edit Task")
+
+    # Delete Message Label & Entry
+    Update_label = Label(top, text="Please Select enter the ID you wish to delete")
+    Update_label.place(x=60, y=10)
+    Update_entry = Entry(top, width=30)
+    Update_entry.place(x=90, y=40)
+
+    # Label and Entry for new Status
+    status_label = Label(top, text="Enter new status:")
+    status_label.place(x=60, y=80)
+    status_entry = Entry(top, width=30)
+    status_entry.place(x=90, y=110)
+
+    # Success message label
+    success_label = Label(top, text="", fg="green")
+    success_label.place(x=100, y=320)
+
+    # Error message label
+    error_label = Label(top, text="", fg="red")
+    error_label.place(x=75, y=320)
+
+    # delete button to save the task into the database
+    update_button = Button(top, text="Update Task", command=update_task)
+    update_button.place(x=120, y=350, width=100, height=30)
+
     close_button = Button(top, text="Done", command=popup_destroy)
     close_button.place(x=150, y=400,width=40, height=30)
 
 def delete_task():
     def popup_destroy():
         top.destroy()
+
+    def delete_taskid():
+        delete = delete_entry.get()
+
+        if not delete:
+            # Display an error message if the task ID is empty
+            error_label.config(text="Please fill in the ID you wish to delete", fg="red")
+            success_label.config(text="")  # Hide success label
+        else:
+            # SQL query to insert new task into the database
+            cursor.execute('''DELETE FROM to_do_list where id = ?''', [delete])
+
+            # Commit the changes and save the data
+            dataConnector.commit()
+
+            # Show a message indicating that the task was added
+            success_label.config(text="Task Deleted successfully!", fg="green")
+            error_label.config(text="")
+
+            # Clears the fields after submitting
+            delete_entry.delete(0, END)
+
+            rerendertable()
+
     top = Tk()
     width = str(int(root.winfo_screenwidth()/2)-150)
     height = str(int(root.winfo_screenheight()/2)-300)
     top.geometry("350x450+"+width+'+'+height)
     top.title("Delete Task")
+
+    #Delete Message Label & Entry
+    delete_label = Label(top, text="Please Select enter the ID you wish to delete")
+    delete_label.place(x=60, y=10)
+    delete_entry = Entry(top, width=30)
+    delete_entry.place(x=90, y=40)
+
+    # Success message label
+    success_label = Label(top, text="", fg="green")
+    success_label.place(x=100, y=320)
+
+    # Error message label
+    error_label = Label(top, text="", fg="red")
+    error_label.place(x=75, y=320)
+
+    # delete button to save the task into the database
+    delete_button = Button(top, text="Delete Task", command=delete_taskid)
+    delete_button.place(x=120, y=350, width=100, height=30)
+
+    # Close button to close the popup window
     close_button = Button(top, text="Done", command=popup_destroy)
     close_button.place(x=150, y=400,width=40, height=30)
 
@@ -166,6 +276,8 @@ delete_task_button.place(x=680, y=450, width=200, height=60)
 main_menu_button = Button(root, text="Main Menu", command=main_menu, font=bfont)
 main_menu_button.place(x=20, y=520, width=200, height=60)
 
+# Call rerendertable() to populate the table on startup
+rerendertable()
 
 #run it up Blud
 root.mainloop()
