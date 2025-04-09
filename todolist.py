@@ -15,6 +15,7 @@ cursor = dataConnector.cursor()
 root = Tk()
 root.title('To Do List')
 
+
 #centering the window
 width = str(int(root.winfo_screenwidth()/2)-450)
 height = str(int(root.winfo_screenheight()/2)-300)
@@ -22,7 +23,8 @@ root.geometry("900x600+"+width+'+'+height)
 
 mainMenu
 
-bfont = tkFont.Font(family='Helvetica', size=16, weight=tkFont.BOLD)
+# Fonts
+bfont = tkFont.Font(family='OpenSymbol', size=16, weight=tkFont.BOLD)
 
 def rerendertable():
     cursor.execute('select * from to_do_list')
@@ -82,7 +84,7 @@ def new_task():
     top = Tk()
     width = str(int(root.winfo_screenwidth() / 2) - 150)
     height = str(int(root.winfo_screenheight() / 2) - 300)
-    top.geometry("350x450+" + width + '+' + height)
+    top.geometry("350x380+" + width + '+' + height)
     top.title("New Task")
 
     # Labels and Entry fields for task details
@@ -113,15 +115,15 @@ def new_task():
 
     # Success message label
     success_label = Label(top, text="", fg="green")
-    success_label.place(x=110, y=320)
+    success_label.place(x=110, y=260)
 
     # Submit button to save the task into the database
     submit_button = Button(top, text="Add Task", command=submit_task)
-    submit_button.place(x=120, y=350, width=100, height=30)
+    submit_button.place(x=120, y=290, width=100, height=30)
 
     # Close button to close the popup window
     close_button = Button(top, text="Done", command=popup_destroy)
-    close_button.place(x=150, y=400, width=40, height=30)
+    close_button.place(x=150, y=330, width=40, height=30)
 
 def completed_tasks():
     cursor.execute('''select * FROM to_do_list where status = '10/10' ''')
@@ -157,7 +159,7 @@ def edit_task():
             dataConnector.commit()
 
             # Show a message indicating that the task was added
-            success_label.config(text="Task Deleted successfully!", fg="green")
+            success_label.config(text="Task Edited successfully!", fg="green")
             error_label.config(text="")
 
             # Clears the fields after submitting
@@ -168,11 +170,11 @@ def edit_task():
     top = Tk()
     width = str(int(root.winfo_screenwidth()/2)-150)
     height = str(int(root.winfo_screenheight()/2)-300)
-    top.geometry("350x450+"+width+'+'+height)
+    top.geometry("350x250+"+width+'+'+height)
     top.title("Edit Task")
 
     # Delete Message Label & Entry
-    Update_label = Label(top, text="Please Select enter the ID you wish to delete")
+    Update_label = Label(top, text="Please enter the ID you wish to edit")
     Update_label.place(x=60, y=10)
     Update_entry = Entry(top, width=30)
     Update_entry.place(x=90, y=40)
@@ -185,18 +187,18 @@ def edit_task():
 
     # Success message label
     success_label = Label(top, text="", fg="green")
-    success_label.place(x=100, y=320)
+    success_label.place(x=100, y=130)
 
     # Error message label
     error_label = Label(top, text="", fg="red")
-    error_label.place(x=75, y=320)
+    error_label.place(x=75, y=130)
 
     # delete button to save the task into the database
     update_button = Button(top, text="Update Task", command=update_task)
-    update_button.place(x=120, y=350, width=100, height=30)
+    update_button.place(x=120, y=160, width=100, height=30)
 
     close_button = Button(top, text="Done", command=popup_destroy)
-    close_button.place(x=150, y=400,width=40, height=30)
+    close_button.place(x=150, y=200,width=40, height=30)
 
 def delete_task():
     def popup_destroy():
@@ -228,7 +230,7 @@ def delete_task():
     top = Tk()
     width = str(int(root.winfo_screenwidth()/2)-150)
     height = str(int(root.winfo_screenheight()/2)-300)
-    top.geometry("350x450+"+width+'+'+height)
+    top.geometry("350x200+"+width+'+'+height)
     top.title("Delete Task")
 
     #Delete Message Label & Entry
@@ -239,19 +241,19 @@ def delete_task():
 
     # Success message label
     success_label = Label(top, text="", fg="green")
-    success_label.place(x=100, y=320)
+    success_label.place(x=100, y=75)
 
     # Error message label
     error_label = Label(top, text="", fg="red")
-    error_label.place(x=75, y=320)
+    error_label.place(x=75, y=75)
 
     # delete button to save the task into the database
     delete_button = Button(top, text="Delete Task", command=delete_taskid)
-    delete_button.place(x=120, y=350, width=100, height=30)
+    delete_button.place(x=120, y=100, width=100, height=30)
 
     # Close button to close the popup window
     close_button = Button(top, text="Done", command=popup_destroy)
-    close_button.place(x=150, y=400,width=40, height=30)
+    close_button.place(x=150, y=150,width=40, height=30)
 
 def main_menu():
     pass
@@ -278,7 +280,7 @@ delete_task_button.place(x=680, y=450, width=200, height=60)
 main_menu_button = Button(root, text="Main Menu", command=main_menu, font=bfont)
 main_menu_button.place(x=20, y=520, width=200, height=60)
 
-refresh_button = Button(root, text="Refresh", command=refreshtable, font=bfont)
+refresh_button = Button(root, text="Refresh Tasks", command=refreshtable, font=bfont)
 refresh_button.place(x=240, y=520, width=200, height=60)
 
 # Call rerendertable() to populate the table on startup
