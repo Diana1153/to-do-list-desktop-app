@@ -17,3 +17,6 @@ Mark Rodriguez
 User stories can be found in userStories.txt
 ### Sprints
 Sprint 1: Create project description, application environment, and user stories.
+Sprint 2: Create windows and button functionality.
+Sprint 3: Create pop up windows and finish button functionality with error checking.
+Sprint 4: Create login for admin and user with different views.
