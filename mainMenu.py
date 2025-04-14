@@ -1,6 +1,8 @@
 #libraries
 from tkinter import *
 from tkinter import font as tkFont
+import sqlite3
+import todolist
 
 def show_login():
     #main window
@@ -32,11 +34,29 @@ def show_login():
     password_input = Entry(width=30)
     password_input.place(x=110, y=350)
 
+    error_label = Label(main, text="", fg="red")
+    error_label.place(x=110, y=375)
+
     #button to get rid of window
     def login():
-        main.destroy()
-        import todolist
-        todolist.show_todolist()
+        user = username_input.get()
+        pwd = password_input.get()
+
+        connection = sqlite3.connect('todolist.db')
+        cursor = connection.cursor()
+
+        cursor.execute("Select * From users where user_name = ? and password = ?", [user,pwd])
+        result = cursor.fetchone()
+
+        if result:
+            access_level = result[3]  # Get access_level from the tuple
+            main.destroy()
+            if access_level == 1:
+                todolist.show_todolist_admin()
+            else:
+                todolist.show_todolist_user()
+        else:
+            error_label.config(text="Incorrect username or password!", fg ='red')
 
     login_button = Button(main, text="Login", command=login)
     login_button.place(x=175, y=400)

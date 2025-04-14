@@ -5,7 +5,7 @@ from tkinter import ttk
 import sqlite3
 import mainMenu
 
-def show_todolist():
+def show_todolist_admin():
     #creating the connector to database
     dataConnector = sqlite3.connect('todolist.db')
 
@@ -15,7 +15,7 @@ def show_todolist():
 
     #app window creation
     root = Tk()
-    root.title('To Do List')
+    root.title('To Do List - Admin')
 
 
     #centering the window
@@ -292,4 +292,131 @@ def show_todolist():
     rerendertable()
 
     #run it up Blud
+    root.mainloop()
+
+
+def show_todolist_user():
+    # creating the connector to database
+    dataConnector = sqlite3.connect('todolist.db')
+
+    # createing a cursor
+    cursor = dataConnector.cursor()
+
+    # app window creation
+    root = Tk()
+    root.title('To Do List - User')
+
+    # centering the window
+    width = str(int(root.winfo_screenwidth() / 2) - 450)
+    height = str(int(root.winfo_screenheight() / 2) - 300)
+    root.geometry("900x600+" + width + '+' + height)
+
+    # Fonts
+    bfont = tkFont.Font(family='OpenSymbol', size=16, weight=tkFont.BOLD)
+
+    def rerendertable():
+        cursor.execute('select * from to_do_list')
+        whattodo = cursor.fetchall()
+
+        show_work = ''
+        for work in whattodo:
+            show_work += str(work) + "\n"
+
+        query_label.config(state='normal')  # Make sure you can insert text into the widget
+        query_label.delete('1.0', END)  # Clear previous contents
+        query_label.insert('1.0', show_work)  # Insert the new data
+        query_label.config(state='disabled')  # Make the text widget read-only
+        print("Table re-rendered")
+
+    # functions
+    # Function to add a new task
+
+    def edit_task():
+        def popup_destroy():
+            top.destroy()
+
+        def update_task():
+            task_id = Update_entry.get()  # Get task ID
+            update = status_entry.get()  # Get new status value
+
+            if not update or not task_id:
+                # Display an error message if the task ID is empty
+                error_label.config(text="Please fill in the ID you wish to delete", fg="red")
+                success_label.config(text="")  # Hide success label
+            else:
+                # SQL query to insert new task into the database
+                cursor.execute('''update to_do_list set status = ? where id = ? ''', [update, task_id])
+
+                # Commit the changes and save the data
+                dataConnector.commit()
+
+                # Show a message indicating that the task was added
+                success_label.config(text="Task Edited successfully!", fg="green")
+                error_label.config(text="")
+
+                # Clears the fields after submitting
+                Update_entry.delete(0, END)
+                status_entry.delete(0, END)
+
+                rerendertable()
+
+        top = Tk()
+        width = str(int(root.winfo_screenwidth() / 2) - 150)
+        height = str(int(root.winfo_screenheight() / 2) - 300)
+        top.geometry("350x250+" + width + '+' + height)
+        top.title("Edit Task")
+
+        # Delete Message Label & Entry
+        Update_label = Label(top, text="Please enter the ID you wish to edit")
+        Update_label.place(x=60, y=10)
+        Update_entry = Entry(top, width=30)
+        Update_entry.place(x=90, y=40)
+
+        # Label and Entry for new Status
+        status_label = Label(top, text="Enter new status:")
+        status_label.place(x=60, y=80)
+        status_entry = Entry(top, width=30)
+        status_entry.place(x=90, y=110)
+
+        # Success message label
+        success_label = Label(top, text="", fg="green")
+        success_label.place(x=100, y=130)
+
+        # Error message label
+        error_label = Label(top, text="", fg="red")
+        error_label.place(x=75, y=130)
+
+        # delete button to save the task into the database
+        update_button = Button(top, text="Update Task", command=update_task)
+        update_button.place(x=120, y=160, width=100, height=30)
+
+        close_button = Button(top, text="Done", command=popup_destroy)
+        close_button.place(x=150, y=200, width=40, height=30)
+
+    def main_menu():
+        root.destroy()
+        import mainMenu
+        mainMenu.show_login()
+
+    def refreshtable():
+        rerendertable()
+
+    # Label to display the query results
+    query_label = Text(root, height=25, width=107)
+    query_label.grid(row=0, column=0, padx=20, pady=20)
+
+    # Buttons
+    edit_task_button = Button(root, text="Edit Task", command=edit_task, font=bfont)
+    edit_task_button.place(x=460, y=450, width=200, height=60)
+
+    main_menu_button = Button(root, text="Main Menu", command=main_menu, font=bfont)
+    main_menu_button.place(x=20, y=450, width=200, height=60)
+
+    refresh_button = Button(root, text="Refresh Tasks", command=refreshtable, font=bfont)
+    refresh_button.place(x=240, y=450, width=200, height=60)
+
+    # Call rerendertable() to populate the table on startup
+    rerendertable()
+
+    # run it up Blud
     root.mainloop()
