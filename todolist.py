@@ -182,7 +182,7 @@ def show_todolist_admin():
         Update_entry.place(x=90, y=40)
 
         # Label and Entry for new Status
-        status_label = Label(top, text="Enter new status:")
+        status_label = Label(top, text="Enter new status EX: (#/10)")
         status_label.place(x=60, y=80)
         status_entry = Entry(top, width=30)
         status_entry.place(x=90, y=110)
@@ -236,7 +236,7 @@ def show_todolist_admin():
         top.title("Delete Task")
 
         #Delete Message Label & Entry
-        delete_label = Label(top, text="Please Select enter the ID you wish to delete")
+        delete_label = Label(top, text="Please enter the ID you wish to delete")
         delete_label.place(x=60, y=10)
         delete_entry = Entry(top, width=30)
         delete_entry.place(x=90, y=40)
@@ -282,11 +282,11 @@ def show_todolist_admin():
     delete_task_button = Button(root, text="Delete Task", command=delete_task, font=bfont)
     delete_task_button.place(x=680, y=450, width=200, height=60)
 
-    main_menu_button = Button(root, text="Main Menu", command=main_menu, font=bfont)
-    main_menu_button.place(x=20, y=520, width=200, height=60)
+    main_menu_button = Button(root, text="Log-Out", command=main_menu, font=bfont)
+    main_menu_button.place(x=680, y=520, width=200, height=60)
 
     refresh_button = Button(root, text="Refresh Tasks", command=refreshtable, font=bfont)
-    refresh_button.place(x=240, y=520, width=200, height=60)
+    refresh_button.place(x=20, y=520, width=200, height=60)
 
     # Call rerendertable() to populate the table on startup
     rerendertable()
@@ -373,7 +373,7 @@ def show_todolist_user():
         Update_entry.place(x=90, y=40)
 
         # Label and Entry for new Status
-        status_label = Label(top, text="Enter new status:")
+        status_label = Label(top, text="Enter new status EX: (#/10)")
         status_label.place(x=60, y=80)
         status_entry = Entry(top, width=30)
         status_entry.place(x=90, y=110)
@@ -406,14 +406,14 @@ def show_todolist_user():
     query_label.grid(row=0, column=0, padx=20, pady=20)
 
     # Buttons
-    edit_task_button = Button(root, text="Edit Task", command=edit_task, font=bfont)
-    edit_task_button.place(x=460, y=450, width=200, height=60)
+    edit_task_button = Button(root, text="Edit Status", command=edit_task, font=bfont)
+    edit_task_button.place(x=240, y=450, width=200, height=60)
 
-    main_menu_button = Button(root, text="Main Menu", command=main_menu, font=bfont)
-    main_menu_button.place(x=20, y=450, width=200, height=60)
+    main_menu_button = Button(root, text="Log-Out", command=main_menu, font=bfont)
+    main_menu_button.place(x=680, y=520, width=200, height=60)
 
     refresh_button = Button(root, text="Refresh Tasks", command=refreshtable, font=bfont)
-    refresh_button.place(x=240, y=450, width=200, height=60)
+    refresh_button.place(x=20, y=450, width=200, height=60)
 
     # Call rerendertable() to populate the table on startup
     rerendertable()
