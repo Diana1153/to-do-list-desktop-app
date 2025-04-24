@@ -2,6 +2,7 @@
 from tkinter import *
 from tkinter import font as tkFont
 from tkinter import ttk
+import tkinter as tk
 import sqlite3
 import mainMenu
 
@@ -29,18 +30,18 @@ def show_todolist_admin():
     bfont = tkFont.Font(family='OpenSymbol', size=16, weight=tkFont.BOLD)
 
     def rerendertable():
-        cursor.execute('select * from to_do_list')
-        whattodo = cursor.fetchall()
+        # Clear the Treeview first
+        for item in query_label.get_children():
+            query_label.delete(item)
 
-        show_work = ''
-        for work in whattodo:
-            show_work += str(work) + "\n"
+        # Then fetch and re-insert fresh data
+        cursor.execute('SELECT * FROM to_do_list')
+        rows = cursor.fetchall()
+        for row in rows:
+            query_label.insert("", tk.END, values=row)
+        print("Table rerendered")
 
-        query_label.config(state='normal')  # Make sure you can insert text into the widget
-        query_label.delete('1.0', END)  # Clear previous contents
-        query_label.insert('1.0', show_work)  # Insert the new data
-        query_label.config(state='disabled')  # Make the text widget read-only
-        print("Table re-rendered")
+
 
     #functions
     # Function to add a new task
@@ -128,18 +129,19 @@ def show_todolist_admin():
         close_button.place(x=150, y=330, width=40, height=30)
 
     def completed_tasks():
-        cursor.execute('''select * FROM to_do_list where status = '10/10' ''')
-        whattodo = cursor.fetchall()
+        # Clear previous Treeview rows
+        for item in query_label.get_children():
+            query_label.delete(item)
 
-        show_work = ''
-        for work in whattodo:
-            show_work += str(work) + "\n"
+        # Fetch only completed tasks
+        cursor.execute("SELECT * FROM to_do_list WHERE status = '10/10'")
+        rows = cursor.fetchall()
 
-        query_label.config(state='normal')  # Make sure you can insert text into the widget
-        query_label.delete('1.0', END)  # Clear previous contents
-        query_label.insert('1.0', show_work)  # Insert the new data
-        query_label.config(state='disabled')  # Make the text widget read-only
-        print("Table re-rendered")
+        # Insert the completed tasks into the Treeview
+        for row in rows:
+            query_label.insert("", tk.END, values=row)
+
+        print("Completed tasks rendered")
 
     def edit_task():
         def popup_destroy():
@@ -266,8 +268,20 @@ def show_todolist_admin():
         rerendertable()
         
     # Label to display the query results
-    query_label = Text(root, height=25, width=107)
-    query_label.grid(row=0, column=0, padx=20, pady=20)
+    query_label = ttk.Treeview(root, column=("c1", "c2", "c3", "c4", "c5", "c6"), show='headings')
+    query_label.column("#1", anchor=tk.NW, width=15)
+    query_label.heading("#1", text="ID", anchor=tk.CENTER)
+    query_label.column("#2", anchor=tk.NW)
+    query_label.heading("#2", text="Task Name")
+    query_label.column("#3", anchor=tk.NW, width=60)
+    query_label.heading("#3", text="Due Date")
+    query_label.column("#4", anchor=tk.NW)
+    query_label.heading("#4", text="Description")
+    query_label.column("#5", anchor=tk.NW, width=40)
+    query_label.heading("#5", text="Status")
+    query_label.column("#6", anchor=tk.NW)
+    query_label.heading("#6", text="People")
+    query_label.place(x=20, y=20, width=850, height=400)
 
     # Buttons
     new_task_button = Button(root, text="New Task", command=new_task, font=bfont)
@@ -315,18 +329,16 @@ def show_todolist_user():
     bfont = tkFont.Font(family='OpenSymbol', size=16, weight=tkFont.BOLD)
 
     def rerendertable():
-        cursor.execute('select * from to_do_list')
-        whattodo = cursor.fetchall()
+        # Clear the Treeview first
+        for item in query_label.get_children():
+            query_label.delete(item)
 
-        show_work = ''
-        for work in whattodo:
-            show_work += str(work) + "\n"
-
-        query_label.config(state='normal')  # Make sure you can insert text into the widget
-        query_label.delete('1.0', END)  # Clear previous contents
-        query_label.insert('1.0', show_work)  # Insert the new data
-        query_label.config(state='disabled')  # Make the text widget read-only
-        print("Table re-rendered")
+        # Then fetch and re-insert fresh data
+        cursor.execute('SELECT * FROM to_do_list')
+        rows = cursor.fetchall()
+        for row in rows:
+            query_label.insert("", tk.END, values=row)
+        print("Table rerendered")
 
     # functions
     # Function to add a new task
@@ -402,8 +414,20 @@ def show_todolist_user():
         rerendertable()
 
     # Label to display the query results
-    query_label = Text(root, height=25, width=107)
-    query_label.grid(row=0, column=0, padx=20, pady=20)
+    query_label = ttk.Treeview(root, column=("c1", "c2", "c3", "c4", "c5", "c6"), show='headings')
+    query_label.column("#1", anchor=tk.NW, width=15)
+    query_label.heading("#1", text="ID", anchor=tk.CENTER)
+    query_label.column("#2", anchor=tk.NW)
+    query_label.heading("#2", text="Task Name")
+    query_label.column("#3", anchor=tk.NW, width=60)
+    query_label.heading("#3", text="Due Date")
+    query_label.column("#4", anchor=tk.NW)
+    query_label.heading("#4", text="Description")
+    query_label.column("#5", anchor=tk.NW, width=40)
+    query_label.heading("#5", text="Status")
+    query_label.column("#6", anchor=tk.NW)
+    query_label.heading("#6", text="People Involved")
+    query_label.place(x=20, y=20, width=850, height=400)
 
     # Buttons
     edit_task_button = Button(root, text="Edit Status", command=edit_task, font=bfont)
