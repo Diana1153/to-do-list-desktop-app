@@ -148,61 +148,176 @@ def show_todolist_admin():
             top.destroy()
 
         def update_task():
-            task_id = Update_entry.get()  # Get task ID
-            update = status_entry.get() # Get new status value
+            task_id = id_entry.get()
+            name = name_entry.get()
+            due_date = due_date_entry.get()
+            description = description_entry.get()
+            status = status_entry.get()
+            people = people_entry.get()
 
-            if not update or not task_id:
+            if not task_id:
                 # Display an error message if the task ID is empty
                 error_label.config(text="Please fill in the ID you wish to delete", fg="red")
-                success_label.config(text="")  # Hide success label
-            else:
-                # SQL query to insert new task into the database
-                cursor.execute('''update to_do_list set status = ? where id = ? ''', [update, task_id])
+            else: 
+                if name and due_date and description and status and people: 
+                    # Execute query
+                    cursor.execute('''update to_do_list 
+                                   set name = ?, due_date = ?, description = ?, status = ?, people_involved = ?
+                                   where id = ?''',
+                                   [name, due_date, description, status, people, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
 
-                # Commit the changes and save the data
-                dataConnector.commit()
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
 
-                # Show a message indicating that the task was added
-                success_label.config(text="Task Edited successfully!", fg="green")
-                error_label.config(text="")
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    name_entry.delete(0, END)
+                    due_date_entry.delete(0,END)
+                    description_entry.delete(0, END)
+                    status_entry.delete(0, END)
+                    people_entry.delete(0, END)
 
-                # Clears the fields after submitting
-                Update_entry.delete(0, END)
-                status_entry.delete(0, END)
+                    rerendertable()
 
-                rerendertable()
+                elif name and due_date and description and status: 
+                    # Execute query
+                    cursor.execute('''UPDATE to_do_list 
+                                   SET name = ?, due_date = ?, description = ?, status = ?
+                                   WHERE id = ?''',
+                                   [name, due_date, description, status, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
+
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
+
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    name_entry.delete(0, END)
+                    due_date_entry.delete(0,END)
+                    description_entry.delete(0, END)
+                    status_entry.delete(0, END)
+
+                    rerendertable()
+
+                elif name and due_date and description:
+                    # Execute query
+                    cursor.execute('''UPDATE to_do_list 
+                                   SET name = ?, due_date = ?, description = ?
+                                   WHERE id = ?''',
+                                   [name, due_date, description, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
+
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
+
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    name_entry.delete(0, END)
+                    due_date_entry.delete(0,END)
+                    description_entry.delete(0, END)
+
+                    rerendertable()
+
+                elif name and due_date:
+                    # Execute query
+                    cursor.execute('''UPDATE to_do_list 
+                                   SET name = ?, due_date = ?
+                                   WHERE id = ?''',
+                                   [name, due_date, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
+
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
+
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    name_entry.delete(0, END)
+                    due_date_entry.delete(0,END)
+
+                    rerendertable()
+
+                elif task_id and name:
+                    # Execute query
+                    cursor.execute('''UPDATE to_do_list 
+                                   SET name = ? 
+                                   WHERE id = ?''', [name, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
+
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
+
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    name_entry.delete(0, END)
+
+                    rerendertable()
+
+        # Window display
         top = Tk()
-        width = str(int(root.winfo_screenwidth()/2)-150)
-        height = str(int(root.winfo_screenheight()/2)-300)
-        top.geometry("350x250+"+width+'+'+height)
+        width = str(int(root.winfo_screenwidth() / 2) - 150)
+        height = str(int(root.winfo_screenheight() / 2) - 300)
+        top.geometry("350x400+" + width + '+' + height)
         top.title("Edit Task")
 
-        # Delete Message Label & Entry
-        Update_label = Label(top, text="Please enter the ID you wish to edit")
-        Update_label.place(x=60, y=10)
-        Update_entry = Entry(top, width=30)
-        Update_entry.place(x=90, y=40)
+        # Labels and Entry fields for task details
+        id_label = Label(top, text="Task ID:")
+        id_label.place(x=20, y= 30)
+        id_entry = Entry(top, width=30)
+        id_entry.place(x=120, y=30)
 
-        # Label and Entry for new Status
-        status_label = Label(top, text="Enter new status EX: (#/10)")
-        status_label.place(x=60, y=80)
+        name_label = Label(top, text="Task Name:")
+        name_label.place(x=20, y=80)
+        name_entry = Entry(top, width=30)
+        name_entry.place(x=120, y=80)
+
+        due_date_label = Label(top, text="Due Date:")
+        due_date_label.place(x=20, y=130)
+        due_date_entry = Entry(top, width=30)
+        due_date_entry.place(x=120, y=130)
+
+        description_label = Label(top, text="Description:")
+        description_label.place(x=20, y=180)
+        description_entry = Entry(top, width=30)
+        description_entry.place(x=120, y=180)
+
+        status_label = Label(top, text="Status:")
+        status_label.place(x=20, y=230)
         status_entry = Entry(top, width=30)
-        status_entry.place(x=90, y=110)
+        status_entry.place(x=120, y=230)
+
+        people_label = Label(top, text="People Involved:")
+        people_label.place(x=20, y=280)
+        people_entry = Entry(top, width=30)
+        people_entry.place(x=120, y=280)
 
         # Success message label
         success_label = Label(top, text="", fg="green")
-        success_label.place(x=100, y=130)
+        success_label.place(x=105, y=300)
 
         # Error message label
         error_label = Label(top, text="", fg="red")
-        error_label.place(x=75, y=130)
+        error_label.place(x=75, y=300)
+
+        no_id_label = Label(top, text="", fg="red")
+        no_id_label.place(x=75, y=300)
 
         # delete button to save the task into the database
         update_button = Button(top, text="Update Task", command=update_task)
-        update_button.place(x=120, y=160, width=100, height=30)
+        update_button.place(x=120, y=320, width=100, height=30)
 
         close_button = Button(top, text="Done", command=popup_destroy)
-        close_button.place(x=150, y=200,width=40, height=30)
+        close_button.place(x=150, y=360,width=40, height=30)
 
     def delete_task():
         def popup_destroy():
