@@ -159,7 +159,7 @@ def show_todolist_admin():
                 # Display an error message if the task ID is empty
                 error_label.config(text="Please fill in the ID you wish to delete", fg="red")
             else: 
-                if name and due_date and description and status and people: 
+                if task_id and name and due_date and description and status and people: 
                     # Execute query
                     cursor.execute('''update to_do_list 
                                    set name = ?, due_date = ?, description = ?, status = ?, people_involved = ?
@@ -182,7 +182,7 @@ def show_todolist_admin():
 
                     rerendertable()
 
-                elif name and due_date and description and status: 
+                elif task_id and name and due_date and description and status: 
                     # Execute query
                     cursor.execute('''UPDATE to_do_list 
                                    SET name = ?, due_date = ?, description = ?, status = ?
@@ -204,7 +204,7 @@ def show_todolist_admin():
 
                     rerendertable()
 
-                elif name and due_date and description:
+                elif task_id and name and due_date and description:
                     # Execute query
                     cursor.execute('''UPDATE to_do_list 
                                    SET name = ?, due_date = ?, description = ?
@@ -225,7 +225,7 @@ def show_todolist_admin():
 
                     rerendertable()
 
-                elif name and due_date:
+                elif task_id and name and due_date:
                     # Execute query
                     cursor.execute('''UPDATE to_do_list 
                                    SET name = ?, due_date = ?
