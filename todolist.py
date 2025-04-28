@@ -263,6 +263,200 @@ def show_todolist_admin():
 
                     rerendertable()
 
+                elif task_id and due_date and description and status and people:
+                    # Execute query
+                    cursor.execute('''UPDATE to_do_list 
+                                   SET due_date = ?, description = ?, status = ?, people_involved = ?
+                                   WHERE id = ?''', [due_date, description, status, people, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
+
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
+
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    due_date_entry.delete(0, END)
+                    description_entry.delete(0, END)
+                    status_entry.delete(0, END)
+                    people_entry.delete(0, END)
+
+
+                    rerendertable()
+
+                elif task_id and due_date and description and status:
+                    # Execute query
+                    cursor.execute('''UPDATE to_do_list 
+                                   SET due_date = ?, description = ?, status = ?
+                                   WHERE id = ?''', [due_date, description, status, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
+
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
+
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    due_date_entry.delete(0, END)
+                    description_entry.delete(0, END)
+                    status_entry.delete(0, END)
+
+                    rerendertable()
+
+                elif task_id and due_date and description:
+                    # Execute query
+                    cursor.execute('''UPDATE to_do_list 
+                                   SET due_date = ?, description = ?
+                                   WHERE id = ?''', [due_date, description, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
+
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
+
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    due_date_entry.delete(0, END)
+                    description_entry.delete(0, END)
+
+                    rerendertable()
+
+                elif task_id and due_date:
+                    # Execute query
+                    cursor.execute('''UPDATE to_do_list 
+                                   SET due_date = ? 
+                                   WHERE id = ?''', [due_date, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
+
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
+
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    due_date_entry.delete(0, END)
+
+                    rerendertable()
+
+                elif task_id and description and status and people:
+                    # Execute query
+                    cursor.execute('''UPDATE to_do_list 
+                                   SET description = ?, status = ?, people_involved = ?
+                                   WHERE id = ?''', [description, status, people, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
+
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
+
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    description_entry.delete(0, END)
+                    status_entry.delete(0, END)
+                    people_entry.delete(0, END)
+
+                    rerendertable()
+
+                elif task_id and description and status:
+                    # Execute query
+                    cursor.execute('''UPDATE to_do_list 
+                                   SET description = ?, status = ?
+                                   WHERE id = ?''', [description, status, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
+
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
+
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    description_entry.delete(0, END)
+                    status_entry.delete(0, END)
+                    
+
+                    rerendertable()
+
+                elif task_id and description:
+                    # Execute query
+                    cursor.execute('''UPDATE to_do_list 
+                                   SET description = ? 
+                                   WHERE id = ?''', [description, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
+
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
+
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    description_entry.delete(0, END)
+                   
+
+                    rerendertable()
+
+                elif task_id and status and people:
+                    # Execute query
+                    cursor.execute('''UPDATE to_do_list 
+                                   SET status = ?, people_involved = ?
+                                   WHERE id = ?''', [status, people, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
+
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
+
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    status_entry.delete(0, END)
+                    people_entry.delete(0, END)
+
+                    rerendertable()
+
+                elif task_id and status:
+                    # Execute query
+                    cursor.execute('''UPDATE to_do_list 
+                                   SET status = ? 
+                                   WHERE id = ?''', [status, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
+
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
+
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    status_entry.delete(0, END)
+
+                    rerendertable()
+
+                elif task_id and people:
+                    # Execute query
+                    cursor.execute('''UPDATE to_do_list 
+                                   SET people_involved = ? 
+                                   WHERE id = ?''', [people, task_id])
+                    # Commit the changes and save the data
+                    dataConnector.commit()
+
+                    # Show a message indicating that the task was added
+                    success_label.config(text="Task Edited successfully!", fg="green")
+                    error_label.config(text="")
+
+                    # Clears the fields after submitting
+                    id_entry.delete(0, END)
+                    people_entry.delete(0, END)
+
+                    rerendertable()
+
+
         # Window display
         top = Tk()
         width = str(int(root.winfo_screenwidth() / 2) - 150)
