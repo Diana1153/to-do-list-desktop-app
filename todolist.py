@@ -157,7 +157,7 @@ def show_todolist_admin():
 
             if not task_id:
                 # Display an error message if the task ID is empty
-                error_label.config(text="Please fill in the ID you wish to delete", fg="red")
+                error_label.config(text="Please fill in the ID you wish to Edit", fg="red")
             else: 
                 if task_id and name and due_date and description and status and people: 
                     # Execute query
