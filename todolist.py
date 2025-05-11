@@ -714,6 +714,21 @@ def show_todolist_user():
         close_button = Button(top, text="Done", command=popup_destroy)
         close_button.place(x=150, y=200, width=40, height=30)
 
+    def Uncompleted_tasks():
+        # Clear previous Treeview rows
+        for item in query_label.get_children():
+            query_label.delete(item)
+
+        # Fetch only completed tasks
+        cursor.execute("SELECT * FROM to_do_list WHERE status != '10/10'")
+        rows = cursor.fetchall()
+
+        # Insert the completed tasks into the Treeview
+        for row in rows:
+            query_label.insert("", tk.END, values=row)
+
+        print("Uncompleted tasks rendered")
+
     def main_menu():
         root.destroy()
         import mainMenu
@@ -739,6 +754,9 @@ def show_todolist_user():
     query_label.place(x=20, y=20, width=850, height=400)
 
     # Buttons
+    completed_tasks_button = Button(root, text="Uncompleted Tasks", command=Uncompleted_tasks, font=bfont)
+    completed_tasks_button.place(x=460, y=450, width=220, height=60)
+
     edit_task_button = Button(root, text="Edit Status", command=edit_task, font=bfont)
     edit_task_button.place(x=240, y=450, width=200, height=60)
 
